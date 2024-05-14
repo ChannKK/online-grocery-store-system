@@ -1,0 +1,38 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<br>
+<h1>
+    <p><strong>Feedback</strong></p>
+</h1>
+
+{% for feedback in feedbacks%}
+<div style="display:block; flex-direction:row;width: 450px; margin: 10px; box-sizing: border-box;">
+    <div
+        style="position: relative; display: inline-block; border: 1px solid #ddd; padding: 30px; width: 100%; height: 250px;">
+        {% if feedback.feedback_id %}
+        <form action="{% url 'feedback' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="feedback_id" value="{{ feedback.feedback_id }}">
+            <p>{{ feedback.feedback_date }}</p>
+            <p>Customer ID: {{ feedback.customer_id }}</p>
+            <p>Customer feedback: {{ feedback.feedback_receive}}</p>
+            {% if feedback.feedback_reply%}
+            <p>Replied by {{ feedback.manager_id }}: </p>
+            <p>{{ feedback.feedback_reply }}</p>
+
+            {% else %}
+            <p><textarea type="text" name='feedback_reply' placeholder='Write a reply here...' 
+                    rows="5" cols="150" required></textarea></p>
+            <button type="submit" class="btn btn-success btn-square buttonsize"
+                style="position: absolute; bottom: 20px; right: 20px;">POST</button>
+
+            {% endif %}
+        </form>
+        {% endif %}
+    </div>
+</div>
+</form>
+
+{% endfor %}
+{% endblock %}

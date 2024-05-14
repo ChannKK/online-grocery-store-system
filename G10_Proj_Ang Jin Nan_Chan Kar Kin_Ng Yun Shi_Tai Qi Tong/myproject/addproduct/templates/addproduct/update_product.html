@@ -1,0 +1,51 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<div class="formupdateproduct">
+    <br>
+    <h1>
+        <p><strong>Update Product Form</strong></p>
+    </h1>
+    {% if product.product_id %}
+    <form method="POST" action="{{ product_id }}" enctype="multipart/form-data"> 
+        {% csrf_token %}
+        <div class="row margintop">
+            <p>
+                Product ID: <strong>{{ product.product_id }}</strong>
+            </p>
+
+            <p>
+                <div>Product Image: </div>
+                <img src="/product_images/{{ product.product_pic }}" width="300" />
+                <input type="file" name="product_pic" class="form-control">
+            </p>
+
+            <p>
+                Product Name: <input type="text" name="product_name" value="{{ product.product_name }}"
+                    class="form-control" required>
+            </p>
+            <p>
+                Product Description: <textarea type="text" name="product_info"
+                    class="form-control" rows="5" cols="150">{{ product.product_info }}</textarea>
+            </p>
+
+            <p>
+                Product Quantity: <input type="number" name="product_qty" value="{{ product.product_qty }}"
+                    class="form-control" min="0">
+            </p>
+
+            <p>
+                Product Price: <input type="number" step="0.01" min="0.01" max="999.99" name="product_price" value="{{ product.product_price }}"
+                    class="form-control">
+            </p>
+
+            <div class="margintop">
+                <button type="submit" class="btn btn-success btn-square buttonsize">Submit</button>
+                <a class="btn btn-danger btn-square buttonsize" href="/menu">Cancel</a>
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <p>Product ID is not available.</p>
+    {% endif %}
+</div>
+{% endblock %}

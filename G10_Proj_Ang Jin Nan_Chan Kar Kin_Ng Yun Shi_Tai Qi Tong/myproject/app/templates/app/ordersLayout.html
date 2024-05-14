@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Customer </title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 300px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            overflow-x: hidden;
+            padding-top: 60px;
+            color: #fff;
+        }
+
+        .sidebar h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            padding: 20px;
+            border-bottom: 1px solid #555;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar li:hover {
+            background-color: #555;
+        }
+
+        .sidebar li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .content {
+            margin-left: 320px; /* Adjust to match the width of the sidebar */
+            padding: 20px;
+        }
+
+        .content h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .content li {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content li:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .content li p {
+            margin: 0;
+        }
+
+        .content li p:first-child {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .content form {
+            display: inline;
+        }
+
+        .content form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .content form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">Online Grocery Store System</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'cart_summary' %}">Cart <span class="text-white ms-1 rounded-pill" id="cart_qty">{{ cart|length }}</span></a></li>
+                    <li><a href="{% url 'order_status' %}">Orders</a></li>                    
+                </ul>
+                {% include 'app/loginpartial.html' %}
+            </div>
+        </div>
+    </div>
+    <div class="sidebar">
+        <h1>My Orders</h1>
+        <ul>
+            <li><a href="{% url 'order_status' %}">Order Status</a></li>
+            <li><a href="{% url 'completed_order' %}">Completed Order</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+        <hr/>
+        <footer>
+            <p>&copy; {{ year }} - My Django Application</p>
+        </footer>
+    </div>
+
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
+    <script src="{% static 'app/scripts/respond.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

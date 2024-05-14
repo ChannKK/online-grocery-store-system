@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #333;
+            padding-top: 60px;
+            color: #fff;
+            font-size: 18px; 
+            font-family: Arial, sans-serif; 
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            padding: 15px;
+            text-align: left; 
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #666; 
+        }
+
+        .sidebar li:hover {
+            background-color: #555;
+        }
+
+        .content {
+            margin-left: 300px;
+            padding: 20px;
+        }
+
+        .button {
+            color: #fff; 
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: color 0.3s; 
+        }
+
+        .button:hover {
+            color: #ccc; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 28px;
+            color: #333;
+        }
+
+        p {
+            margin: 0 0 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>DELIVERY STAFF PAGE</h2>
+        <ul>
+            <li><a href="{% url 'view_unassigned_orders' %}" class="button">View Unassigned Orders</a></li>
+            <li><a href="{% url 'view_assigned_orders' %}" class="button">View Assigned Orders</a></li>
+            <li><a href="{% url 'confirm_order' %}" class="button">Confirm Delivery</a></li>
+            <li><a href="/" class="button">Homepage</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}
+            <h2>Assigned Orders</h2>
+
+            {% if orders %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Delivery ID</th>
+                            <th>Order ID</th>
+                            <th>Delivery Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.delivery_id }}</td>
+                                <td>{{ order.order_id }}</td>
+                                <td>{{ order.delivery_address }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No assigned orders available.</p>
+            {% endif %}
+        {% endblock %}
+    </div>
+</body>
+</html>

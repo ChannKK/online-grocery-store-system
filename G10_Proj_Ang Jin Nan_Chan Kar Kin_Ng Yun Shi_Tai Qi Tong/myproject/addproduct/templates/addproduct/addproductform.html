@@ -1,0 +1,46 @@
+{% extends "app/layout.html" %}
+{% block content %}
+
+<div class="formaddproduct">
+    <br>
+    <h1>
+        <strong>Add Product Form</strong>
+    </h1>
+
+    <form class="addproductsubmission" action="addproductconfirmation" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row margintop">
+
+            <p>
+            <div>Product Image: </div>
+            <input type="file" name="product_pic" placeholder='Product Image' class="form-control" required>
+            </p>
+
+            <p>Product ID: <input type="text" name='product_id' placeholder='Product id' class="form-control" required
+                    maxlength="10" /></p>
+
+            <p>Product Name: <input type="text" name="product_name" placeholder='Product name' class="form-control"
+                    required></p>
+
+            <p>Product Description: <textarea type="text" name="product_info" placeholder='describe the product here...'
+                    class="form-control" rows="5" cols="150"></textarea></p>
+
+            <p>Product Quantity: <input type="number" name='product_qty' placeholder='Product quantity'
+                    class="form-control" required min="0" /></p>
+
+            <p>Product Price: <input type="number" step="0.01" name='product_price' placeholder='Product price'
+                    min="0.01" max="999.99" class="form-control" required />
+            </p>
+
+
+        </div>
+
+        <div class="margintop">
+            <button type="submit" class="btn btn-success btn-square buttonsize">Submit</button>
+            <a class="btn btn-danger btn-square buttonsize" href="/menu">Cancel</a>
+        </div>
+    </form>
+
+</div>
+{% endblock %}

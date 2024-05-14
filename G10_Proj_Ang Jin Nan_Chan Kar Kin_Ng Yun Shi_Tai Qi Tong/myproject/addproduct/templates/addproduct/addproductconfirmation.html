@@ -1,0 +1,30 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="formupdateproduct">
+    <br>
+    <hi>
+        <p><strong>Product Added!</strong></p>
+    </hi>
+
+    <p>
+    <div>Product Image: </div>
+    <img src="product_images/product_images/{{ product_pic }}" width="300" />
+    </p>
+    <p>Product ID: {{ product_id }}</p>
+    <p>Product Name: {{ product_name }}</p>
+    <p>Product Description: {{ product_info }}</p>
+    <p>Product Quantity: {{ product_qty }}</p>
+    <p>Product Price: RM{{ product_price }}</p>
+
+
+    <form class="updateproductsubmission margintop" action="addproductdetails" method="POST">
+        <div class="margintop">
+            <a class="btn btn-danger btn-square buttonsize" href="/menu">Cancel</a>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

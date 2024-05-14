@@ -1,0 +1,39 @@
+
+{% extends "app/storestafflayout.html" %}
+
+{% block content %}
+<h2>Order Item for Order {{ order.order_id }}</h2>
+<br>
+<div class="d-flex justify-content-center row">
+    <div class="col-md-12"> 
+        <div class="rounded">
+            <div class="table-responsive table-borderless">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Order Item ID</th>
+                        <th>Product ID</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for orderitem in order_items %}
+                        <tr>
+                            <td>{{ orderitem.orderItem_id }}</td>
+                            <td>{{ orderitem.product_id }}</td>
+                            <td>RM {{ orderitem.orderUnitPrice }}</td>
+                            <td>{{ orderitem.orderItem_qty }}</td>
+                            <td>RM {{ orderitem.orderItem_subtotal }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+<p><a href="/sstf_checkorder">Back</a></p>
+
+{% endblock %}

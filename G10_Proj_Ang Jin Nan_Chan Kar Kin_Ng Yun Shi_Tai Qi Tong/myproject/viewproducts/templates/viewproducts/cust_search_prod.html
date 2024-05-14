@@ -1,0 +1,80 @@
+{<!-- viewproducts/templates/viewproducts/product_details.html -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - My Django Application</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">Online Grocery Store System</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'cart_summary' %}">Cart <span class="text-white ms-1 rounded-pill" id="cart_qty">{{ cart|length }}</span></a></li>
+                    <li><a href="{% url 'order_status' %}">Orders</a></li>                    
+                </ul>
+                {% include 'app/loginpartial.html' %}
+            </div>
+        </div>
+    </div>
+</body>}
+{% block content %}
+    <br />
+    <br />
+    <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search Result</h2>
+    <br />
+    <br />
+    {% if products %}
+        <div class="container">
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-lg-4">
+                        <div class="box-element product">
+                            <div class="product-pic">
+                                <img src="/product_images/{{ product.product_pic }}" width="auto" height="200px" />
+                            </div>
+                            <div class="product-details">
+                                <h5><strong>{{ product.product_name }}</strong></h5>
+                                <hr />
+                                {% if product.product_id %}
+                                    <a href="{% url 'view_prod_details' product_id=product.product_id %}" class="btn btn-outline-secondary add-btn">View Details</a>
+                                {% else %}
+                                    <span style="color: red;">Invalid product ID</span>
+                                {% endif %}
+                                <h4 style="display: inline-block; float: right">RM {{ product.product_price }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    <br />
+    <hr/>
+    <br />
+    <footer class="text-center">
+        <p>End of Search Result</p>
+    </footer>
+    {% else %}
+        <div class="text-center">
+            <p>No Product Found</p>
+        </div>
+    {% endif %}  
+{% endblock %}

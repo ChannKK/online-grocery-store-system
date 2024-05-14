@@ -1,0 +1,124 @@
+{% extends "app/storestafflayout.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center row mt-3">
+  <div class="col-md-12">
+      {% if messages %}
+          <div class="mb-3">
+              {% for message in messages %}
+                  <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% endif %}">
+                      <span>{{ message }}</span>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+              {% endfor %}
+          </div>
+      {% endif %}
+        <h2>Orders</h2>
+        <form class="form-group" action="" method="GET">
+            <div class="form-inline">
+                <div class="form-group ml-auto" style="margin-right: 15px;">
+                    <label for="order_status" class="mr-2">Filter by Status:</label>
+                    <select name="order_status" class="form-control">
+                        <option value="" {% if not request.GET.order_status %} selected {% endif %}>All</option>
+                        <option value="Pending Packing" {% if request.GET.order_status == 'Pending Packing' %} selected {% endif %}>Pending Packing</option>
+                        <option value="Ready for Delivery" {% if request.GET.order_status == 'Ready for Delivery' %} selected {% endif %}>Ready for Delivery</option>
+                        <option value="Canceled" {% if request.GET.order_status == 'Canceled' %} selected {% endif %}>Canceled</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="search" class="sr-only">Search</label>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Search by Customer ID" style="width: 200px;">
+                </div>
+
+                <button type="submit" class="btn btn-primary ml-2">Search</button>
+            </div>
+        </form>
+        <br />
+
+<div class="d-flex justify-content-center row">
+    <div class="col-md-12">
+        <div class="rounded">
+            <div class="table-responsive table-borderless">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th style="width: 50px;">Order ID</th>
+                        <th style="width: 50px;">Customer ID</th>
+                        <th style="width: 50px;">Cart ID</th>
+                        <th style="width: 50px;">Staff ID</th>
+                        <th style="width: 40px;">Order Quantity</th>
+                        <th style="width: 60px;">Total</th>
+                        <th style="width: 100px;">Order Date</th>
+                        <th style="width: 150px; word-wrap: break-word;">Order Status</th>
+                        <th style="width: 80px; word-wrap: break-word;">Delivery Address</th>
+                        <th style="width: 80px;">Delivery Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if filtered_orders %}
+                        {% for order in filtered_orders %}
+                          <tr>
+                            <td><a href="{% url 'order_items_view' order_id=order.order_id %}">{{ order.order_id }}</a></td>
+                            <td>{{ order.customer.username }}</td>
+                            <td>{{ order.cart }}</td>
+                            <td>{{ order.staff.username }}</td>
+                            <td>{{ order.order_qty }}</td>
+                            <td>RM {{ order.order_amt }}</td>
+                            <td>{{ order.order_date }}</td>
+                            <td>
+                            <form method="post" action="{% url 'update_order_status' order.order_id %}">
+                              {% csrf_token %}
+                              <select name="order_status" class="form-control" onchange="this.form.submit()">
+                                <option value="Pending Packing" {% if order.order_status == 'Pending Packing' %} selected {% endif %}>Pending Packing</option>
+                                <option value="Ready for Delivery" {% if order.order_status == 'Ready for Delivery' %} selected {% endif %}>Ready for Delivery</option>
+                                <option value="Canceled" {% if order.order_status == 'Canceled' %} selected {% endif %}>Canceled</option>
+                              </select>
+                            </form>
+                            </td>
+                            <td style="word-wrap: break-word;">{{ order.delivery_addr }}</td>
+                            <td>{{ order.delivery_remark }}</td>
+                          </tr> 
+                        {% endfor %}
+                      {% else %}
+                        {% if search_query %}
+                          <tr>
+                            <td colspan="10">No orders found for customer with ID "{{ search_query }}"</td>
+                          </tr>
+                        {% else %}
+                          {% for order in orders %}
+                            <tr>
+                                <td><a href="{% url 'order_items_view' order_id=order.order_id %}">{{ order.order_id }}</a></td>
+                                <td>{{ order.customer.username }}</td>
+                                <td>{{ order.cart }}</td>
+                                <td>{{ order.staff.username }}</td>
+                                <td>{{ order.order_qty }}</td>
+                                <td>RM {{ order.order_amt }}</td>
+                                <td>{{ order.order_date }}</td>
+                                <td>
+                                <form method="post" action="{% url 'update_order_status' order.order_id %}">
+                                  {% csrf_token %}
+                                  <select name="order_status" class="form-control" onchange="this.form.submit()">
+                                    <option value="Pending Packing" {% if order.order_status == 'Pending Packing' %} selected {% endif %}>Pending Packing</option>
+                                    <option value="Ready for Delivery" {% if order.order_status == 'Ready for Delivery' %} selected {% endif %}>Ready for Delivery</option>
+                                    <option value="Canceled" {% if order.order_status == 'Canceled' %} selected {% endif %}>Canceled</option>
+                                  </select>
+                                </form>
+                                </td>
+                                <td>{{ order.delivery_addr }}</td>
+                                <td>{{ order.delivery_remark }}</td>
+                            </tr>
+                          {% endfor %}
+                        {% endif %}
+                      {% endif %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

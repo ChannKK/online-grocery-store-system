@@ -1,0 +1,77 @@
+{% extends 'app/custLayout.html' %}
+
+{% block content %}
+    <div class="content">
+        {% if product.product_id %}
+            <div class="title">
+                <br />
+                <br />
+                <h2>&nbsp;&nbsp;&nbsp;Product Information</h2>
+                <section class="main-wrap">
+                    <div class="product">
+                        <div class="product-pic">
+                            <img src="/product_images/{{ product.product_pic }}" alt="{{ product.product_name }}" width="300" />
+                        </div>
+                        <div class="product-details">
+                            <div class="details">
+                                <h2>{{ product.product_name }}</h2>
+                                <h3>RM {{ product.product_price }}</h3>
+                                <p>{{ product.product_info }}</p>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <label for="qty-cart" class="form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quantity</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select form-select-sm" id="cartItem-qty">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br/><br/><br/><br/>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <button type="button" value="{{ product.product_id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        <script>
+            //check if button pressed
+            $(document).on('click', '#add-cart', function(e){
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'cart_add' %}',
+                    data: {
+                        product_id: $('#add-cart').val(),
+                        cartItem_qty: $('#cartItem-qty option:selected').text(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post'
+                    },
+                    success: function(json){
+                        document.getElementById("cart_qty").textContent = json.qty;
+                    },
+                    error: function(xhr, errmsg, err){
+                        // Handle error if needed
+                    }
+                });
+            });
+        </script>
+        {% else %}
+            <p>Product ID is not available.</p>
+        {% endif %}
+    </div>
+{% endblock %}

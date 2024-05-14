@@ -1,0 +1,142 @@
+{% extends 'app/custLayout.html' %}
+
+{% block content %}
+<style>
+    .info-container {
+        background-color: #f2f2f2;
+        padding: 5px 20px 15px 20px;
+        border: 1px solid lightgrey;
+        border-radius: 3px;
+        float: center;
+    }
+
+    .placeOrder-btn{
+        background: #B4B4B8
+    }
+</style>
+
+<div class="content">
+    <br/><br/>
+    <h2><strong>&nbsp;&nbsp;&nbsp;Checkout</strong></h2>
+    <br/><br/>
+
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10">
+            <div class="rounded">
+                <div class="table-responsive table-borderless">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <div class="toggle-btn">
+                                        <div class="inner-circle"></div>
+                                    </div>
+                                </th>
+                                <th></th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            {% if cart_items %}
+                                {% for product in cart_items %}
+                                    <tr>
+                                        <td><img src="/product_images/{{ product.product_pic }}" width="auto" height="200px" /></td>
+                                        <td>{{ product.id }}</td>
+                                        <td>{{ product.product_name }}</td>
+                                        <td>
+                                            <div class="row align-items-center">
+                                                <div class="col-md-4">
+                                                    <select class="form-select form-select-sm" id="select{{product.product_id}}">
+                                                        {% for key, value in cartItem_qty.items %}
+                                                            {% if key == product.product_id %}
+                                                                <option selected>{{ value }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% for key, value in cartItem_subtotal.items %}
+                                                {% if key == product.product_id %}
+                                                    RM {{ value.subtotal }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>    
+                                {% endfor %}                                   
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <!-- Add any additional information or steps in the checkout process here -->
+                    <br/><br/><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <td>
+        <td>
+            <div class="info-container">
+                <!-- Personal Info Section -->
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3><strong>Personal Info & Delivery Address</strong></h3>
+                                    <p>Name: James Lim                                    </p>
+                                    <p>Phone Number: (012) 940-9338</p>
+                                    <p>Delivery Address: Mutiara Ville Tower F, Persiaran Sepang, Cyberjaya, 63000 Cyberjaya, Selangor</p>
+                                    <p>Delivery Remarks: </p>
+                                    <input type="text" class="form-control" id="remark" name="remark" placeholder="Write your remark here..." style="width: 200px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/>
+               <!-- Payment Method Section -->
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3><strong>Payment Method</strong></h3>
+                                    <p><a href="#" class="payment-method-link">Select payment method</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/>
+                <!-- Order Summary Section -->
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3><strong>Order Summary</strong></h3>
+                                    <h4><p>&nbsp;Order Total: RM {{ cart_amt }}</p></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/>
+                <!-- Place Order Button -->
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <button type="button" data-index="" class="btn btn-secondary place-order placeOrder-btn">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </td>
+</div>
+
+{% endblock %}

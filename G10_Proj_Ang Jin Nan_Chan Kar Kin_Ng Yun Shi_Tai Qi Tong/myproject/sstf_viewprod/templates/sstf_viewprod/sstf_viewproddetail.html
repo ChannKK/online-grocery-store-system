@@ -1,0 +1,58 @@
+{% extends "app/storestafflayout.html" %}
+
+{% block content %}
+    <style>
+        .product-details-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .product-details {
+            width: 50%;
+            border: 1px solid #ddd;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .product-details img {
+            width: 40%; 
+            height: 50%; 
+            max-width: 400px; /* Adjust the max-width as needed */
+            display: block;
+            margin:auto;
+        }
+
+        .product-info {
+            width: 45%;
+            max-width: 600px; /* Adjust the max-width as needed */
+        }
+
+        @media (max-width: 768px) {
+            .product-details-container {
+                flex-direction: column; /* Stack vertically on smaller screens */
+            }
+
+            .product-details,
+            .product-info {
+                width: 100%; /* Occupy full width on smaller screens */
+                max-width: none; /* Remove max-width constraint */
+            }
+        }
+    </style>
+
+    <h1>Product Details</h1>
+    <div class="product-details-container">
+        <div class="product-details">
+            <img src="/product_images/{{ selected_product.product_pic }}" alt="{{ selected_product.product_name }}" />
+        </div>
+        <div class="product-details product-info">
+            <h3> {{ selected_product.product_id }} </h3>
+            <h1>{{ selected_product.product_name }}</h1>
+            <p>{{ selected_product.product_info }}</p>
+            <p>Qty: {{ selected_product.product_qty }}</p>
+            <h2>RM {{ selected_product.product_price }}</h2>
+        </div>
+    </div>
+    <p><a href="/sstf_viewprod">Back to Products</a></p>
+{% endblock %}

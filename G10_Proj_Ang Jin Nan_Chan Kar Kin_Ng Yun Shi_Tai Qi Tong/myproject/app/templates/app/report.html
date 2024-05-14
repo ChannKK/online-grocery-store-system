@@ -1,0 +1,34 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<br>
+<h1>
+  <p><strong>Sales Report</strong></p>
+</h1>
+
+<div style="display: block;justify-content: space-between;">
+  <form action="{% url 'report' %}" method="GET">
+    {% csrf_token %}
+    <div>
+      <label for="month" style="display: block;">Select Year and Month:</label>
+      <input type="month" name="month" min="2023-12" max="{% now 'Y-m' %}" />
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-success btn-square buttonsize">Generate report</button>
+  </form>
+  {% if select %}
+  <div>
+    <h2>Report generated for {{selected_month_number}}/{{selected_year}}</h3>
+    <br />
+    <h3>Total Order of Customers: {{ total_orders }}</h3>
+    <h3>Total Amount Earn: RM{{ total_earned|floatformat:2 }}</h3>
+    <h3>Highest Selling Product: {{ highest_selling }}</h3>
+  </div>
+
+  {% endif %}
+
+
+</div>
+
+{% endblock %}

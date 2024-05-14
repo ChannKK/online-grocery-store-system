@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Delivery</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #333;
+            padding-top: 60px;
+            color: #fff;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            font-size: 24px;
+            text-decoration: none;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar li {
+            padding: 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #666;
+        }
+        .sidebar li:hover {
+            background-color: #555;
+        }
+
+        .content {
+            margin-left: 300px;
+            padding: 20px;
+        }
+
+        .button {
+            color: #fff; 
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: color 0.3s; 
+        }
+        .button:hover {
+            color: #ccc;
+        }
+
+        .confirm-button-container {
+            margin-top: 20px;
+            text-align: left; 
+        }
+
+        .confirm-button {
+            background-color: #28a745;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply animation to content */
+        .content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>DELIVERY STAFF PAGE</h2>
+        <ul>
+            <li><a href="{% url 'view_unassigned_orders' %}" class="button">View Unassigned Orders</a></li>
+            <li><a href="{% url 'view_assigned_orders' %}" class="button">View Assigned Orders</a></li>
+            <li><a href="{% url 'confirm_order' %}" class="button">Confirm Delivery</a></li>
+            <li><a href="/" class="button">Homepage</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h2>Confirm Delivery Order</h2>
+        <form method="post" action="{% url 'confirm_order' %}">
+            {% csrf_token %}
+            <label for="delivery_id">Select Delivery ID:</label>
+            <select name="delivery_id" id="delivery_id">
+                {% for delivery_id in delivery_ids %}
+                <option value="{{ delivery_id }}">{{ delivery_id }}</option>
+                {% endfor %}
+            </select>
+            <label for="photo">Upload Delivery Photo:</label>
+            <input type="file" name="photo" accept="image/*">
+            {% if order %}
+            <img src="{{ order.delivery_pic.url }}" alt="Delivery Photo">
+            {% endif %}
+            <label for="delivery_status">Select Delivery Status:</label>
+            <select name="delivery_status" id="delivery_status">
+                <option value="Completed">Completed Delivery Order</option>
+                <option value="Canceled Delivery Order">Canceled Delivery Order</option>
+            </select>
+            <button type="submit" class="confirm-button">SUBMIT</button>
+        </form>
+        
+    </div>
+</body>
+</html>

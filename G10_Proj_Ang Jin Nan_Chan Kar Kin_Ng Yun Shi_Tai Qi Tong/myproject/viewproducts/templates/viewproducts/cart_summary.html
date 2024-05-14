@@ -1,0 +1,168 @@
+{% extends 'app/custLayout.html' %}
+{% block content %}
+<style>
+    .checkout-btn {
+        background-color: #F0F8FF;
+        font-size: 20px;
+    }
+</style>
+
+<div class="content">
+    <br>
+    <h1>
+        <p><strong>&nbsp;&nbsp;&nbsp; My Cart</strong></p>
+    </h1>
+
+    <br />
+    <br />
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10">
+            <div class="rounded">
+                <div class="table-responsive table-borderless">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <div class="toggle-btn">
+                                        <div class="inner-circle"></div>
+                                    </div>
+                                </th>
+                                <th></th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            {% if cart_items %}
+                                {% for product in cart_items %}
+                                    <tr>
+                                        <td><img src="/product_images/{{ product.product_pic }}" width="auto" height="200px" /></td>
+                                        <td>{{ product.id }}</td>
+                                        <td>{{ product.product_name }}</td>
+                                        <td>RM {{ product.product_price }}</td>
+                                        <td>
+                                            <div class="row align-items-center">
+                                                <div class="col-md-4">
+                                                    <select class="form-select form-select-sm" id="select{{product.product_id}}">
+                                                        {% for key, value in cartItem_qty.items %}
+                                                            {% if key == product.product_id %}
+                                                                <option selected>{{ value }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% for key, value in cartItem_subtotal.items %}
+                                                {% if key == product.product_id %}
+                                                    RM {{ value.subtotal }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>                                                                     
+                                        <td>
+                                            <button type="button" data-index="{{product.product_id}}" class="btn btn-secondary update-cart">Update</button>
+                                            <button type="button" data-index="{{product.product_id}}" class="btn btn-danger delete-item">Remove</button>
+                                        </td> 
+                                    </tr>
+                                    
+                                {% endfor %}
+                                <td colspan="6">
+                                    <h3><strong>&nbsp;&nbsp;&nbsp; Order Summary: RM {{ cart_amt }}</strong></h3>
+                                </td>
+                                <td>
+                                    <button type="button" data-index="" class="btn btn-secondary checkout checkout-btn">Checkout</button>
+                                </td>
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        <p style="font-size: 20px; font-weight: bold;">Your cart is empty. </p>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <br/><br/><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //UPDATE CART
+    //check if button pressed
+    $(document).on('click', '.update-cart', function(e){
+        e.preventDefault();
+
+        //grab productID
+        var product_id = $(this).data('index');
+        var selectedQuantity = $('#select' + product_id).val();  // Get the selected value from the dropdown
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_update' %}',
+            data: {
+                product_id: product_id,  // Use the correct variable name
+                cartItem_qty: selectedQuantity,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json){
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+                // Handle error if needed
+            }
+        });
+    });
+
+
+    //DELETE ITEM FROM CART
+    //check if button pressed
+    $(document).on('click', '.delete-item', function(e){
+        e.preventDefault();
+
+        var product_id = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_delete' %}',
+            data: {
+                product_id: product_id,  // Use the correct variable name
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json){
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+                // Handle error if needed
+            }
+        });
+    });
+
+    // CHECKOUT
+    // Check if the button is pressed
+    $(document).on('click', '.checkout-btn', function(e){
+        e.preventDefault();
+
+        var userId = '{{ request.user.id }}';
+
+        // Redirect to the checkout page
+        window.location.href = '{% url 'checkout' %}?user_id=' + userId;
+    });
+</script>
+
+{% endblock %}

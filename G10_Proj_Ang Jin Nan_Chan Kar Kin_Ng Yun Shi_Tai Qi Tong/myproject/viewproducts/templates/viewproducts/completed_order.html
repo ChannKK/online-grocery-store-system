@@ -1,0 +1,43 @@
+{% extends 'app/ordersLayout.html' %}
+
+{% block content %}
+    <div class="content">
+        <br />
+        <br />
+        <h2>Completed Order</h2>
+
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-10">
+                <div class="rounded">
+                    <div class="table-responsive table-borderless">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                   <th>Status</th>
+                                    <th>Order Date</th>
+                                    <th>Order ID</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">            
+                                <tr>
+                                    <td>Order Received</td>            
+                                    <td>12 Jan, 2023</td>
+                                    <td>ord0001</td>
+                                    <td>
+                                        <input type="text" class="form-control" id="feedback" name="feedback" placeholder="Write your feedback here..." style="width: 200px;">
+                                        <br/>
+                                        <button type="button" data-index="" class="btn btn-secondary write-review">Write a Review</button>
+                                    </td>
+
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <br/><br/><br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
